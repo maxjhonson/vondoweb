@@ -1,4 +1,5 @@
 import React from "react";
+import CreateTour from "./components/host/tour/create/CreateTour";
 import HomePage from "./pages/HomePage";
 
 function App(props) {
@@ -6,7 +7,8 @@ function App(props) {
 
   return (
     <div>
-      <HomePage />
+      <CreateTour />
+      {/* <HomePage /> */}
     </div>
   );
 }
