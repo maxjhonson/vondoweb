@@ -22,7 +22,6 @@ function GettingStart(props) {
                 and housed in a nice, gilded frame.
               </p>
               <p className="mb-5 mb-lg-0">
-                {" "}
                 <button
                   className="btn btn-primary"
                   onClick={() => {
@@ -38,7 +37,7 @@ function GettingStart(props) {
                 className="img-fluid"
                 src="img/illustration/undraw_celebration_0jvk.svg"
                 alt=""
-                style={{ width: "400px;" }}
+                style={{ width: "400px" }}
               />
             </div>
           </div>

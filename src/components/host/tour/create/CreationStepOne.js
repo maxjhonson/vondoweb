@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Field, useFormState } from "react-final-form";
 import { useNavigate } from "react-router";
-import { InputWitValidation, SelectWithvalidation } from "./FieldsComponents";
+import {
+  InputWitValidation,
+  RadioListWithValidation,
+  SelectWithvalidation,
+  TextAreaWithValidation,
+} from "./FieldsComponents";
 
-const CreationStepOne = (props) => {
+const CreationStepOne = () => {
   const navigate = useNavigate();
   const [isValidated, setIsValidated] = useState(false);
   const formState = useFormState();
@@ -11,18 +16,20 @@ const CreationStepOne = (props) => {
   const onNextClick = () => {
     setIsValidated(true);
     if (!formState.errors.title) {
-      //navigate("/paso-2");
+      navigate("/paso-2");
     }
   };
   useEffect(() => {
     window.$("#categories_id").selectpicker();
+    window.$("#rr").datepicker();
   }, []);
   return (
     <section className="py-5">
+      <input id="rr" />
       <div className="container">
         <p className="subtitle text-primary">AGREGAR NUEVO TOUR</p>
         <h1 className="h2 mb-5">
-          Iformación Basica <span className="text-muted float-end">Paso 1</span>{" "}
+          Iformación Basica <span className="text-muted float-end">Paso 1</span>
         </h1>
         <div className="row form-block">
           <div className="col-lg-4">
@@ -50,20 +57,22 @@ const CreationStepOne = (props) => {
             </div>
             <div className="mb-4">
               <label className="form-label" for="form_type">
-                Categoría
+                Categorías
               </label>
               <Field
                 name="categories"
                 id="los"
                 type="select"
+                multiple
                 render={(props) => (
                   <SelectWithvalidation
                     input={{ ...props.input, id: "categories_id" }}
                     meta={props.meta}
                     isValidated={isValidated}
                     options={[
-                      { value: "t", label: "d" },
-                      { value: "r", label: "Adios" },
+                      { value: "fasfafs", label: "Acampar" },
+                      { value: "fasfsadsf", label: "Internacional" },
+                      { value: "fassfasfafa", label: "Aventura" },
                     ]}
                   />
                 )}
@@ -71,33 +80,29 @@ const CreationStepOne = (props) => {
             </div>
             <div className="mb-4">
               <label className="form-label">¿Mascotas permitidas?</label>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  id="guests_0"
-                  name="guests"
-                />
-                <label className="form-check-label" for="guests_0">
-                  Si
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  id="guests_1"
-                  name="guests"
-                />
-                <label className="form-check-label" for="guests_1">
-                  No
-                </label>
-              </div>
+              <RadioListWithValidation
+                name="petFriendly"
+                errors={formState.errors.petFriendly}
+                isValidated={isValidated}
+                values={[
+                  { value: "yes", label: "yes" },
+                  { value: "no", label: "no" },
+                ]}
+              />
             </div>
             <div className="mb-4">
               <label className="form-label">Descripción del viaje</label>
               <div className="form-group">
-                <textarea className="form-control" rows="8" />
+                <Field
+                  name="description"
+                  render={(props) => (
+                    <TextAreaWithValidation
+                      input={{ ...props.input, rows: 8 }}
+                      meta={props.meta}
+                      isValidated={isValidated}
+                    />
+                  )}
+                />
               </div>
             </div>
           </div>

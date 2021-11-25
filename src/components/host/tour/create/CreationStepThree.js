@@ -20,7 +20,7 @@ function CreationStepThree(props) {
             <div className="col-lg-7 ms-auto">
               <div className="mb-4">
                 <label className="form-label" for="form_name">
-                  Nombre del Tour
+                  Fecha de Salida
                 </label>
                 <input className="form-control" name="name" id="form_name" />
               </div>
