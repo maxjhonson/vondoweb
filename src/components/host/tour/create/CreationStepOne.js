@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Field, useFormState } from "react-final-form";
 import { useNavigate } from "react-router";
 import {
-  InputWitValidation,
+  DatePickerWithValidation,
+  InputWithValidation,
   RadioListWithValidation,
   SelectWithvalidation,
   TextAreaWithValidation,
@@ -21,11 +22,10 @@ const CreationStepOne = () => {
   };
   useEffect(() => {
     window.$("#categories_id").selectpicker();
-    window.$("#rr").datepicker();
   }, []);
   return (
     <section className="py-5">
-      <input id="rr" />
+      <Field name="dateOfBirth" component={DatePickerWithValidation} />
       <div className="container">
         <p className="subtitle text-primary">AGREGAR NUEVO TOUR</p>
         <h1 className="h2 mb-5">
@@ -40,14 +40,12 @@ const CreationStepOne = () => {
           </div>
           <div className="col-lg-7 ms-auto">
             <div className="mb-4">
-              <label className="form-label" for="form_name">
-                Nombre del Tour
-              </label>
+              <label className="form-label">Nombre del Tour</label>
               <Field
                 name="title"
-                className="form-control is-invalid"
+                className="form-control"
                 render={(props) => (
-                  <InputWitValidation
+                  <InputWithValidation
                     input={props.input}
                     meta={props.meta}
                     isValidated={isValidated}
@@ -55,6 +53,39 @@ const CreationStepOne = () => {
                 )}
               />
             </div>
+
+            <div className="row">
+              <div className="col-lg-6">
+                <label className="form-label">Fecha de Salida</label>
+                <Field
+                  name="departureDate"
+                  className="form-control"
+                  type="input"
+                  render={(props) => (
+                    <InputWithValidation
+                      input={{ ...props.input, id: " " }}
+                      meta={props.meta}
+                      isValidated={isValidated}
+                    />
+                  )}
+                />
+              </div>
+              <div className="col-lg-6">
+                <label className="form-label">Fecha de Retorno</label>
+                <Field
+                  name="returnDate"
+                  className="form-control"
+                  render={(props) => (
+                    <InputWithValidation
+                      input={{ ...props.input, id: "returnDate_id" }}
+                      meta={props.meta}
+                      isValidated={isValidated}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
             <div className="mb-4">
               <label className="form-label" for="form_type">
                 Categorías

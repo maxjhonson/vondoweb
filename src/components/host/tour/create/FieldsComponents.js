@@ -1,5 +1,7 @@
 import React, { Fragment } from "react";
+import ReactDatePicker from "react-datepicker";
 import { Field } from "react-final-form";
+import "react-datepicker/dist/react-datepicker.css";
 
 const renderErrors = (error) => {
   if (Array.isArray(error)) {
@@ -14,7 +16,7 @@ const renderErrors = (error) => {
   }
 };
 
-export const InputWitValidation = ({ input, meta, isValidated }) => {
+export const InputWithValidation = ({ input, meta, isValidated }) => {
   const invalidCss = isValidated && meta.error ? "is-invalid" : "";
   return (
     <React.Fragment>
@@ -23,6 +25,35 @@ export const InputWitValidation = ({ input, meta, isValidated }) => {
         {isValidated && meta.error && renderErrors(meta.error)}
       </div>
     </React.Fragment>
+  );
+};
+
+export const DatePickerWithValidation = ({
+  name,
+  input,
+  input: { value, onChange },
+}) => {
+  return (
+    <ReactDatePicker
+      className="form-control"
+      locale="de"
+      placeholderText="Datum eingeben"
+      dateFormat="P"
+      //selected={value && isValid(value) ? toDate(value) : null} // needs to be checked if it is valid date
+      disabledKeyboardNavigation
+      name={name}
+      onChange={(date) => {
+        input.onChange(date);
+      }}
+      // onChange={(date) => {
+      //   // On Change, you should use final-form Field Input prop to change the value
+      //   if (isValid(date)) {
+      //     input.onChange(format(new Date(date), "dd-MM-yyyy"));
+      //   } else {
+      //     input.onChange(null);
+      //   }
+      // }}
+    />
   );
 };
 

@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Field, useFormState } from "react-final-form";
 import { useNavigate } from "react-router";
-import { TextAreaWithValidation } from "./FieldsComponents";
+import {
+  InputWithValidation,
+  TextAreaWithValidation,
+} from "./FieldsComponents";
 
 function CreationStepTwo() {
   const [isValidated, setIsValidated] = useState(false);
@@ -29,12 +32,12 @@ function CreationStepTwo() {
             </div>
             <div className="col-lg-7 ms-auto">
               <div className="mb-4">
-                <label className="form-label">Incluye</label>
+                <label className="form-label">Fecha de Salida</label>
                 <div className="form-group">
                   <Field
                     name="included"
                     render={(props) => (
-                      <TextAreaWithValidation
+                      <InputWithValidation
                         input={{ ...props.input, rows: 4 }}
                         meta={props.meta}
                         isValidated={isValidated}
@@ -43,13 +46,15 @@ function CreationStepTwo() {
                   />
                 </div>
               </div>
+            </div>
+            <div className="col-lg-7 ms-auto">
               <div className="mb-4">
-                <label className="form-label">Recomendaciones</label>
+                <label className="form-label">Fecha de Retorno</label>
                 <div className="form-group">
                   <Field
-                    name="recommendation"
+                    name="included"
                     render={(props) => (
-                      <TextAreaWithValidation
+                      <InputWithValidation
                         input={{ ...props.input, rows: 4 }}
                         meta={props.meta}
                         isValidated={isValidated}
@@ -58,13 +63,15 @@ function CreationStepTwo() {
                   />
                 </div>
               </div>
+            </div>
+            <div className="col-lg-7 ms-auto">
               <div className="mb-4">
-                <label className="form-label">Notas Importantes</label>
+                <label className="form-label">Cantidad de días</label>
                 <div className="form-group">
                   <Field
-                    name="importantNote"
+                    name="included"
                     render={(props) => (
-                      <TextAreaWithValidation
+                      <InputWithValidation
                         input={{ ...props.input, rows: 4 }}
                         meta={props.meta}
                         isValidated={isValidated}
