@@ -5,27 +5,24 @@ import GettingStart from "./GettingStart";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import CreationStepTwo from "./CreationStepTwo";
 import CreationStepThree from "./CreationStepThree";
-import { Form, Field } from "react-final-form";
+import { Form, Field, useFormState } from "react-final-form";
 import validator from "validator";
+import arrayMutators from "final-form-arrays";
 
 function CreateTour(props) {
   const onSubmit = (formValues) => {
-    console.log(formValues);
+    console.log("onsubmint, createtor", formValues);
   };
   return (
     <React.Fragment>
       <PrincipalHeader />
       <Form
         onSubmit={onSubmit}
+        mutators={{ ...arrayMutators }}
         validate={validate}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <button type="submit">Try</button>
-            <Field
-              name="firstName"
-              component="input"
-              placeholder="First Name"
-            />
             <MemoryRouter>
               <Routes>
                 <Route path="/" element={<GettingStart />} />
@@ -75,6 +72,20 @@ const validate = (value) => {
       "La longitud de este campo debe ser entre 50 y 2000 caracteres"
     );
   }
+
+  if (!validator.isAfter(value.departureDate?.toString() ?? "")) {
+    errors.departureDate = "Este campo debe ser mayor a la fecha de hoy";
+  }
+
+  if (
+    validator.isBefore(
+      value.returnDate?.toString() ?? "",
+      value.departureDate?.toString() ?? ""
+    )
+  ) {
+    errors.returnDate = "La Fecha de retorno debe ser mayor a la salida";
+  }
+
   if (titleErrors.length > 0) errors.title = titleErrors;
   if (descriptionErrors.length > 0) errors.description = descriptionErrors;
   return errors;

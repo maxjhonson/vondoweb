@@ -29,31 +29,32 @@ export const InputWithValidation = ({ input, meta, isValidated }) => {
 };
 
 export const DatePickerWithValidation = ({
-  name,
   input,
+  meta,
   input: { value, onChange },
+  isValidated,
 }) => {
+  const invalidCss = isValidated && meta.error ? "is-invalid" : "";
+  console.log(input);
   return (
-    <ReactDatePicker
-      className="form-control"
-      locale="de"
-      placeholderText="Datum eingeben"
-      dateFormat="P"
-      //selected={value && isValid(value) ? toDate(value) : null} // needs to be checked if it is valid date
-      disabledKeyboardNavigation
-      name={name}
-      onChange={(date) => {
-        input.onChange(date);
-      }}
-      // onChange={(date) => {
-      //   // On Change, you should use final-form Field Input prop to change the value
-      //   if (isValid(date)) {
-      //     input.onChange(format(new Date(date), "dd-MM-yyyy"));
-      //   } else {
-      //     input.onChange(null);
-      //   }
-      // }}
-    />
+    <React.Fragment>
+      <ReactDatePicker
+        className={`form-control `}
+        locale="de"
+        placeholderText="Fecha"
+        dateFormat="P"
+        selected={value}
+        disabledKeyboardNavigation
+        {...input}
+        onChange={(date) => {
+          input.onChange(new Date(date));
+        }}
+      />
+      <input className={`"form-control ${invalidCss}`} hidden />
+      <div className="invalid-feedback">
+        {isValidated && meta.error && renderErrors(meta.error)}
+      </div>
+    </React.Fragment>
   );
 };
 
@@ -64,8 +65,6 @@ export const RadioListWithValidation = ({
   errors,
 }) => {
   const invalidCss = isValidated && errors ? "is-invalid" : "";
-  console.log(isValidated);
-
   const radioList = values.map((value) => {
     return (
       <div className={`form-check ${invalidCss}`}>

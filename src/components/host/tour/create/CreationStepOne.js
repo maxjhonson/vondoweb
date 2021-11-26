@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ReactDatePicker from "react-datepicker";
 import { Field, useFormState } from "react-final-form";
 import { useNavigate } from "react-router";
 import {
@@ -13,10 +14,19 @@ const CreationStepOne = () => {
   const navigate = useNavigate();
   const [isValidated, setIsValidated] = useState(false);
   const formState = useFormState();
-
+  const [startDate, setStartDate] = useState(new Date());
   const onNextClick = () => {
     setIsValidated(true);
-    if (!formState.errors.title) {
+    console.log("onnext");
+
+    if (
+      !formState.errors.title &&
+      !formState.errors.categories &&
+      !formState.errors.departureDate &&
+      !formState.errors.returnDate &&
+      !formState.errors.petFriendly &&
+      !formState.errors.description
+    ) {
       navigate("/paso-2");
     }
   };
@@ -25,7 +35,6 @@ const CreationStepOne = () => {
   }, []);
   return (
     <section className="py-5">
-      <Field name="dateOfBirth" component={DatePickerWithValidation} />
       <div className="container">
         <p className="subtitle text-primary">AGREGAR NUEVO TOUR</p>
         <h1 className="h2 mb-5">
@@ -53,39 +62,6 @@ const CreationStepOne = () => {
                 )}
               />
             </div>
-
-            <div className="row">
-              <div className="col-lg-6">
-                <label className="form-label">Fecha de Salida</label>
-                <Field
-                  name="departureDate"
-                  className="form-control"
-                  type="input"
-                  render={(props) => (
-                    <InputWithValidation
-                      input={{ ...props.input, id: " " }}
-                      meta={props.meta}
-                      isValidated={isValidated}
-                    />
-                  )}
-                />
-              </div>
-              <div className="col-lg-6">
-                <label className="form-label">Fecha de Retorno</label>
-                <Field
-                  name="returnDate"
-                  className="form-control"
-                  render={(props) => (
-                    <InputWithValidation
-                      input={{ ...props.input, id: "returnDate_id" }}
-                      meta={props.meta}
-                      isValidated={isValidated}
-                    />
-                  )}
-                />
-              </div>
-            </div>
-
             <div className="mb-4">
               <label className="form-label" for="form_type">
                 Categorías
@@ -109,6 +85,37 @@ const CreationStepOne = () => {
                 )}
               />
             </div>
+            <div className="row">
+              <div className="col-lg-6">
+                <label className="form-label">Fecha de Salida</label>
+                <Field
+                  name="departureDate"
+                  type="input"
+                  render={(props) => (
+                    <DatePickerWithValidation
+                      input={props.input}
+                      isValidated={isValidated}
+                      meta={props.meta}
+                    />
+                  )}
+                />
+              </div>
+              <div className="col-lg-6">
+                <label className="form-label">Fecha de Retorno</label>
+                <Field
+                  name="returnDate"
+                  type="input"
+                  render={(props) => (
+                    <DatePickerWithValidation
+                      input={props.input}
+                      meta={props.meta}
+                      isValidated={isValidated}
+                    />
+                  )}
+                />
+              </div>
+            </div>
+
             <div className="mb-4">
               <label className="form-label">¿Mascotas permitidas?</label>
               <RadioListWithValidation
@@ -142,6 +149,7 @@ const CreationStepOne = () => {
           <div className="col text-center text-sm-start"></div>
           <div className="col text-center text-sm-end">
             <button
+              type="button"
               className="btn btn-primary px-3"
               href="user-add-2.html"
               onClick={onNextClick}
