@@ -66,10 +66,7 @@ function AddPlaceModal(props) {
                 />
               </div>
             </div>
-            <LoadScript
-              googleMapsApiKey="AIzaSyAaouNDAnrqADf5mfH4Rmx_KH5_Dd1dDkI"
-              libraries={["places"]}
-            >
+            <LoadScript googleMapsApiKey="" libraries={["places"]}>
               <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
