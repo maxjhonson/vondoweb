@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PrincipalHeader from "../../../PrincipalHeader";
 import CreationStepOne from "./CreationStepOne";
 import GettingStart from "./GettingStart";
@@ -8,11 +8,17 @@ import CreationStepThree from "./CreationStepThree";
 import { Form, Field, useFormState } from "react-final-form";
 import validator from "validator";
 import arrayMutators from "final-form-arrays";
+import AddPlaceModal from "./AddPlaceModal";
 
 function CreateTour(props) {
   const onSubmit = (formValues) => {
     console.log("onsubmint, createtor", formValues);
   };
+  useEffect(() => {
+    window.$(document).ready(function () {
+      window.$("#addPlaceModal").modal("show");
+    });
+  }, []);
   return (
     <React.Fragment>
       <PrincipalHeader />
@@ -22,7 +28,13 @@ function CreateTour(props) {
         validate={validate}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <button type="submit">Try</button>
+            <button
+              type="button"
+              onClick={() => window.$("#addPlaceModal").modal("show")}
+            >
+              Try
+            </button>
+            <AddPlaceModal />
             <MemoryRouter>
               <Routes>
                 <Route path="/" element={<GettingStart />} />
