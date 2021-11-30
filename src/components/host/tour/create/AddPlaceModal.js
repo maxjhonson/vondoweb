@@ -56,13 +56,6 @@ function AddPlaceModal(props) {
     if (autocomplete !== null) {
       const autocompletePlace = autocomplete.getPlace();
       if (!autocompletePlace) return;
-      const adreessObj = getAdreessObj(autocompletePlace?.address_components);
-      setPalce(autocompletePlace.name);
-      setStreet(adreessObj.street);
-      setNumber(adreessObj.streetNumber);
-      setCity(adreessObj.locality);
-      setState(adreessObj.administrativeArea);
-      console.log(autocomplete.getPlace()?.name);
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
@@ -109,8 +102,31 @@ function AddPlaceModal(props) {
           <Form
             mutators={{
               onPlaceChanged: (args, state, utils) => {
-                console.log(args);
-                utils. (state, "street", () => "Calle");
+                const autocompletePlace = autocomplete.getPlace();
+                if (!autocompletePlace) return;
+
+                const adreessObj = getAdreessObj(
+                  autocompletePlace?.address_components
+                );
+
+                utils.changeValue(
+                  state,
+                  "street",
+                  () => autocompletePlace.name
+                );
+                utils.changeValue(state, "plae", () => adreessObj.street);
+
+                utils.changeValue(
+                  state,
+                  "number",
+                  () => adreessObj.streetNumber
+                );
+                utils.changeValue(state, "city", () => adreessObj.locality);
+                utils.changeValue(
+                  state,
+                  "state",
+                  () => adreessObj.administrativeArea
+                );
                 console.log(state);
               },
             }}
@@ -119,10 +135,7 @@ function AddPlaceModal(props) {
             {(props) => (
               <form onSubmit={props.handleSubmit}>
                 <div class="modal-body">
-                  <LoadScript
-                    googleMapsApiKey=""
-                    libraries={["places"]}
-                  >
+                  <LoadScript googleMapsApiKey="" libraries={["places"]}>
                     <Autocomplete
                       onLoad={onLoad}
                       onPlaceChanged={props.form.mutators.onPlaceChanged}
@@ -181,41 +194,49 @@ function AddPlaceModal(props) {
                   <div class="mt-2 row">
                     <div className="col-md-8">
                       <label className="form-label">Calle*</label>
-                      <Field
-                        name="street"
-                        render={(props) =>
-                          InputWithValidation(props.input, props.meta, false)
-                        }
-                      />
+                      <Field name="street">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                          />
+                        )}
+                      </Field>
                     </div>
                     <div className="col-md-4">
                       <label className="form-label">Numero</label>
-                      <Field
-                        name="number"
-                        render={(props) =>
-                          InputWithValidation(props.input, props.meta, false)
-                        }
-                      />
+                      <Field name="number">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                          />
+                        )}
+                      </Field>
                     </div>
                   </div>
                   <div class="mt-2 row">
                     <div className="col-md-6">
                       <label className="form-label">Ciudad*</label>
-                      <Field
-                        name="city"
-                        render={(props) =>
-                          InputWithValidation(props.input, props.meta, false)
-                        }
-                      />
+                      <Field name="city">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                          />
+                        )}
+                      </Field>
                     </div>
                     <div className="col-md-6">
                       <label className="form-label">Provincia*</label>
-                      <Field
-                        name="state"
-                        render={(props) =>
-                          InputWithValidation(props.input, props.meta, false)
-                        }
-                      />
+                      <Field name="state">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                          />
+                        )}
+                      </Field>
                     </div>
                   </div>
                 </div>
