@@ -1,29 +1,51 @@
-import { setIn } from "final-form";
 import React, { useState } from "react";
-import { Field, useFormState } from "react-final-form";
+import { useFormState } from "react-final-form";
 import { FieldArray } from "react-final-form-arrays";
 import { useNavigate } from "react-router";
+import AddPlaceModal from "./AddPlaceModal";
 import AddPriceModal from "./AddPriceModal";
-import {
-  InputWithValidation,
-  TextAreaWithValidation,
-} from "./FieldsComponents";
+import { FieldInput, FieldSelect } from "./FieldsComponents";
+import PlaceItem from "./PlaceItem";
+import PriceItem from "./PriceItem";
+
+const modalInitValues = {
+  isOpen: false,
+  formValues: null,
+};
 
 function CreationStepTwo() {
   const [isValidated, setIsValidated] = useState(false);
   const navigate = useNavigate();
   const formState = useFormState();
-  const [currentIndex, setCurrentIndex] = useState({});
+  const [addPlaceModalProps, setAddPlaceModalProps] = useState(modalInitValues);
+  const [addPriceModalProps, setAddPriceModalProps] = useState(modalInitValues);
 
-  const onNextClick = () => {
-    window.$("#pricesModal").modal("show");
+  const closeAddPlaceModal = () => {
+    setAddPlaceModalProps((curr) => {
+      return { ...curr, isOpen: false, formValues: null };
+    });
+  };
 
-    //navigate("/paso-3");
+  const openAddPlaceModal = (index) => {
+    const formValues = index >= 0 ? formState.values.places[index] : null;
+    setAddPlaceModalProps((curr) => {
+      return { ...curr, isOpen: true, formValues, index };
+    });
   };
-  const addPrice = () => {
-    setCurrentIndex(-1);
-    window.$("#pricesModal").modal("show");
+
+  const closeAddPrice = () => {
+    setAddPriceModalProps((curr) => {
+      return { ...curr, isOpen: false, formValues: null };
+    });
   };
+
+  const openAddPrice = (index) => {
+    const formValues = index >= 0 ? formState.values.prices[index] : null;
+    setAddPriceModalProps((curr) => {
+      return { ...curr, isOpen: true, formValues: { ...formValues, index } };
+    });
+  };
+
   return (
     <section className="py-5">
       <div className="container">
@@ -44,12 +66,25 @@ function CreationStepTwo() {
             <div className="row mb-3">
               <div className="form-group col-md-6">
                 <label className="form-label">Moneda</label>
-                <input className="form-control" type="text"></input>
+                <FieldSelect
+                  name="currency"
+                  htmlProperties={{ className: "form-control" }}
+                  options={[
+                    { value: "DOP", text: "DOP" },
+                    { value: "USD", text: "USD" },
+                  ]}
+                />
               </div>
               <div className="form-group col-md-6">
-                <label className="form-label">Cantidad de cupos</label>
+                <label className="form-label">Cupos disponibles</label>
                 <div className="input-group">
-                  <input className="form-control" type="text"></input>
+                  <FieldInput
+                    name="quantity"
+                    htmlProperties={{
+                      className: "form-control",
+                      type: "number",
+                    }}
+                  />
                   <div className="input-group-append">
                     <span className="input-group-text">Personas</span>
                   </div>
@@ -61,116 +96,70 @@ function CreationStepTwo() {
             <FieldArray name="prices">
               {({ fields }) => (
                 <React.Fragment>
-                  <AddPriceModal fields={fields} currentIndex={currentIndex} />
+                  {addPriceModalProps.isOpen && (
+                    <AddPriceModal
+                      fields={fields}
+                      close={closeAddPrice}
+                      add={fields}
+                      initialValues={addPriceModalProps.formValues}
+                    />
+                  )}
+
                   <label className="form-label">Detalle de Precios</label>
-                  <table className="table table-striped table-sm">
-                    <thead class="thead-light">
-                      <tr>
-                        <th style={{ width: "60%" }}>
-                          <small>Titulo</small>
-                        </th>
-                        <th style={{ width: "20%" }}>
-                          <small>Cupos</small>
-                        </th>
-                        <th style={{ width: "20%" }}>
-                          <small> Precio</small>{" "}
-                        </th>
-                        <th style={{ width: "20%" }}></th>
-                        <th style={{ width: "20%" }}></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {fields.map((name, index) => (
-                        <tr>
-                          <td>
-                            <Field
-                              name={`${name}.name`}
-                              readonly
-                              render={(props) => (
-                                <span>
-                                  <small> {props.input.value}</small>{" "}
-                                </span>
-                              )}
-                            />
-                          </td>
-                          <td>
-                            <Field
-                              name={`${name}.seatsQuantity`}
-                              readonly
-                              render={(props) => (
-                                <span>
-                                  <small> {props.input.value}</small>{" "}
-                                </span>
-                              )}
-                            />
-                          </td>
-                          <td>
-                            <Field
-                              name={`${name}.price`}
-                              readonly
-                              render={(props) => (
-                                <span>
-                                  <small> {props.input.value}</small>{" "}
-                                </span>
-                              )}
-                            />
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-primary btn-sm"
-                              onClick={() => {
-                                setCurrentIndex(index);
-                                window.$("#pricesModal").modal("show");
-                              }}
-                              //onClick={() => fields.remove(index)}
-                            >
-                              <i class="fa fa-edit"></i>
-                            </button>
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              class="btn btn-danger btn-sm"
-                              onClick={() => fields.remove(index)}
-                            >
-                              <i class="fa fa-trash"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td colSpan={2}>
-                          <button
-                            onClick={addPrice}
-                            className="btn btn-primary btn-sm"
-                          >
-                            Agregar
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  {fields.map((name, index) => {
+                    return (
+                      <PriceItem
+                        index={index}
+                        edit={() => openAddPrice(index)}
+                        remove={fields.remove}
+                        priceDetail={name}
+                      />
+                    );
+                  })}
+                  <div className=" text-end">
+                    <button
+                      class="btn btn-link btn-collapse ps-0 text-muted"
+                      type="button"
+                      onClick={() => openAddPrice()}
+                    >
+                      Agregar Precio
+                    </button>
+                  </div>
                 </React.Fragment>
               )}
             </FieldArray>
             <div className="mb-4">
-              <label className="form-label">Lugares de Salida</label>
-              <div className="form-group">
-                <Field
-                  name="included"
-                  render={(props) => (
-                    <InputWithValidation
-                      input={{ ...props.input, rows: 4 }}
-                      meta={props.meta}
-                      isValidated={isValidated}
-                    />
-                  )}
-                />
-              </div>
+              <label className="form-label mb-3">Lugares de Salida</label>
+              <FieldArray name="places">
+                {({ fields }) => (
+                  <React.Fragment>
+                    {addPlaceModalProps.isOpen && (
+                      <AddPlaceModal
+                        add={fields.push}
+                        update={fields.update}
+                        close={closeAddPlaceModal}
+                        initialValues={addPlaceModalProps.formValues}
+                      />
+                    )}
+                    {fields.map((name, index) => (
+                      <PlaceItem
+                        nameField={name}
+                        openAddPlaceModal={() => openAddPlaceModal(index)}
+                        remove={() => fields.remove(index)}
+                      />
+                    ))}
+                    <div className=" text-end">
+                      <button
+                        class="btn btn-link btn-collapse ps-0 text-muted"
+                        type="button"
+                        onClick={() => openAddPlaceModal()}
+                      >
+                        Agregar Lugar
+                      </button>
+                    </div>
+                  </React.Fragment>
+                )}
+              </FieldArray>
             </div>
           </div>
         </div>
@@ -189,7 +178,6 @@ function CreationStepTwo() {
               type="button"
               className="btn btn-primary px-3"
               onClick={() => {
-                setIn(formState, "xd", "hola");
                 console.log(formState);
               }}
             >

@@ -4,21 +4,17 @@ import CreationStepOne from "./CreationStepOne";
 import GettingStart from "./GettingStart";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import CreationStepTwo from "./CreationStepTwo";
-import CreationStepThree from "./CreationStepThree";
 import { Form, Field, useFormState } from "react-final-form";
 import validator from "validator";
 import arrayMutators from "final-form-arrays";
 import AddPlaceModal from "./AddPlaceModal";
+import CreationStepThree from "./step-3/CreationStepThree";
 
 function CreateTour(props) {
   const onSubmit = (formValues) => {
     console.log("onsubmint, createtor", formValues);
   };
-  useEffect(() => {
-    window.$(document).ready(function () {
-      window.$("#addPlaceModal").modal("show");
-    });
-  }, []);
+
   return (
     <React.Fragment>
       <PrincipalHeader />
@@ -28,13 +24,6 @@ function CreateTour(props) {
         validate={validate}
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <button
-              type="button"
-              onClick={() => window.$("#addPlaceModal").modal("show")}
-            >
-              Try
-            </button>
-            <AddPlaceModal />
             <MemoryRouter>
               <Routes>
                 <Route path="/" element={<GettingStart />} />
@@ -96,6 +85,14 @@ const validate = (value) => {
     )
   ) {
     errors.returnDate = "La Fecha de retorno debe ser mayor a la salida";
+  }
+
+  if (validator.isEmpty(value.currency ?? "")) {
+    errors.currency = "Este campo no puede quedar vacío";
+  }
+
+  if (!value.prices && !Array.isArray(value.prices)) {
+    errors.prices = "Debe definir al menos un precio";
   }
 
   if (titleErrors.length > 0) errors.title = titleErrors;

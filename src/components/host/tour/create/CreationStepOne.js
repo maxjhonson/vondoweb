@@ -4,6 +4,8 @@ import { Field, useFormState } from "react-final-form";
 import { useNavigate } from "react-router";
 import {
   DatePickerWithValidation,
+  FieldInput,
+  FieldSelectMultiple,
   InputWithValidation,
   RadioListWithValidation,
   SelectWithvalidation,
@@ -16,9 +18,6 @@ const CreationStepOne = () => {
   const formState = useFormState();
   const [startDate, setStartDate] = useState(new Date());
   const onNextClick = () => {
-    setIsValidated(true);
-    console.log("onnext");
-
     if (
       !formState.errors.title &&
       !formState.errors.categories &&
@@ -50,39 +49,19 @@ const CreationStepOne = () => {
           <div className="col-lg-7 ms-auto">
             <div className="mb-4">
               <label className="form-label">Nombre del Tour</label>
-              <Field
-                name="title"
-                className="form-control"
-                render={(props) => (
-                  <InputWithValidation
-                    input={props.input}
-                    meta={props.meta}
-                    isValidated={isValidated}
-                  />
-                )}
-              />
+              <FieldInput name="title" />
             </div>
             <div className="mb-4">
               <label className="form-label" for="form_type">
                 Categorías
               </label>
-              <Field
+              <FieldSelectMultiple
                 name="categories"
-                id="los"
-                type="select"
-                multiple
-                render={(props) => (
-                  <SelectWithvalidation
-                    input={{ ...props.input, id: "categories_id" }}
-                    meta={props.meta}
-                    isValidated={isValidated}
-                    options={[
-                      { value: "fasfafs", label: "Acampar" },
-                      { value: "fasfsadsf", label: "Internacional" },
-                      { value: "fassfasfafa", label: "Aventura" },
-                    ]}
-                  />
-                )}
+                options={[
+                  { value: "fasfafs", text: "Acampar" },
+                  { value: "fasfsadsf", text: "Internacional" },
+                  { value: "fassfasfafa", text: "Aventura" },
+                ]}
               />
             </div>
             <div className="row">
@@ -149,7 +128,7 @@ const CreationStepOne = () => {
           <div className="col text-center text-sm-start"></div>
           <div className="col text-center text-sm-end">
             <button
-              type="button"
+              type="submit"
               className="btn btn-primary px-3"
               href="user-add-2.html"
               onClick={onNextClick}

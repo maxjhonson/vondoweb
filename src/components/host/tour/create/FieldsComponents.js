@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import ReactDatePicker from "react-datepicker";
 import { Field } from "react-final-form";
 import "react-datepicker/dist/react-datepicker.css";
@@ -146,4 +146,133 @@ export const SelectWithvalidation = ({ input, meta, isValidated, options }) => {
       </div>
     </React.Fragment>
   );
+};
+
+export const FieldSelectMultiple = ({ name, options }) => {
+  const renderOptions = options.map((option) => (
+    <option key={option.value} value={option.value}>
+      {option.text}
+    </option>
+  ));
+  useEffect(() => {
+    window.$(`#${name}`).selectpicker();
+  }, []);
+  return (
+    <Field
+      name={name}
+      render={(props) => (
+        <React.Fragment>
+          <select
+            multiple
+            id={name}
+            title="Pendiente por Seleccionar"
+            {...props.input}
+            className={`selectpicker form-control`}
+            data-style="btn-selectpicker"
+          >
+            {renderOptions}
+          </select>
+        </React.Fragment>
+      )}
+    />
+  );
+};
+
+export const FieldSelect = ({ name, options, htmlProperties }) => {
+  const getClassName = (meta) => {
+    return meta.error && meta.touched
+      ? "form-control is-invalid"
+      : "form-control";
+  };
+  const renderOptions = options.map((option) => (
+    <option key={option.value} value={option.value}>
+      {option.text}
+    </option>
+  ));
+  return (
+    <Field
+      name={name}
+      render={(props) => (
+        <React.Fragment>
+          <select
+            {...props.input}
+            {...htmlProperties}
+            className={getClassName(props.meta)}
+          >
+            <option value="">Pendiente por Seleccionar</option>
+            {renderOptions}
+          </select>
+          {props.meta.error && props.meta.touched && (
+            <div class="invalid-feedback">{props.meta.error}</div>
+          )}
+        </React.Fragment>
+      )}
+    />
+  );
+};
+
+export const FieldInput = ({ name, htmlProperties }) => {
+  const getClassName = (meta) => {
+    return meta.error && meta.touched
+      ? "form-control is-invalid"
+      : "form-control";
+  };
+  return (
+    <Field
+      name={name}
+      render={(props) => (
+        <React.Fragment>
+          <input
+            {...props.input}
+            {...htmlProperties}
+            className={getClassName(props.meta)}
+          />
+          {props.meta.error && props.meta.touched && (
+            <div class="invalid-feedback">{renderErrors(props.meta.error)}</div>
+          )}
+        </React.Fragment>
+      )}
+    />
+  );
+};
+
+export const FieldTextArea = ({ name, htmlProperties }) => {
+  const getClassName = (meta) => {
+    return meta.error && meta.touched
+      ? "form-control is-invalid"
+      : "form-control";
+  };
+  return (
+    <Field
+      name={name}
+      render={(props) => (
+        <React.Fragment>
+          <textarea
+            {...props.input}
+            {...htmlProperties}
+            className={getClassName(props.meta)}
+          />
+          {props.meta.error && props.meta.touched && (
+            <div class="invalid-feedback">{renderErrors(props.meta.error)}</div>
+          )}
+        </React.Fragment>
+      )}
+    />
+  );
+};
+
+export const FieldDisplayText = ({ name }) => {
+  return (
+    <Field
+      name={name}
+      render={(props) => {
+        return <React.Fragment>{props.input.value}</React.Fragment>;
+      }}
+    />
+  );
+};
+
+export const fieldAsText = ({ input, htmlProperties }) => {
+  const value = "input.value";
+  return <span>{value}</span>;
 };
