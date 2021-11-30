@@ -53,6 +53,15 @@ function AddPlaceModal(props) {
     console.log(formValues);
   };
 
+  const onSubmit = () => {
+    const errorList = validate({ place, street, number, city, state });
+    if (Object.keys(errorList).length === 0) {
+    } else {
+      console.log(errorList);
+      setErrors(errorList);
+    }
+  };
+
   return (
     <div
       class="modal fade"
