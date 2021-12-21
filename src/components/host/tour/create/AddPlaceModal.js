@@ -6,18 +6,27 @@ import {
   Marker,
 } from "@react-google-maps/api";
 import { Field, Form } from "react-final-form";
+<<<<<<< HEAD
 import { FieldInput, InputWithValidation } from "./FieldsComponents";
 import { getAddressFormatted } from "../../../../common/utility";
 import reactDom from "react-dom";
 import { Dialog, DialogOverlay, DialogContent } from "@reach/dialog";
 import "../../../../common/css/dialog.css";
 
+=======
+import { InputWithValidation } from "./FieldsComponents";
+import { getAdreessObj } from "../../../../common/utility";
+>>>>>>> 6d0cef8e60e42b3cddc32b244051afcccc94f3d4
 const containerStyle = {
   width: "100%",
   height: "400px",
 };
 
+<<<<<<< HEAD
 function AddPlaceModal({ close, initialValues, add, update }) {
+=======
+function AddPlaceModal(props) {
+>>>>>>> 6d0cef8e60e42b3cddc32b244051afcccc94f3d4
   const [autocomplete, setAutoComplete] = useState(null);
   const [markerPosition, setMarkerPosition] = useState({}); //{lat,lng}
   const [center, setCenter] = useState({
@@ -101,7 +110,10 @@ function AddPlaceModal({ close, initialValues, add, update }) {
             }}
             onSubmit={onSubmit}
             validate={validate}
+<<<<<<< HEAD
             initialValues={initialValues}
+=======
+>>>>>>> 6d0cef8e60e42b3cddc32b244051afcccc94f3d4
           >
             {(props) => (
               <form onSubmit={props.handleSubmit}>
@@ -127,9 +139,20 @@ function AddPlaceModal({ close, initialValues, add, update }) {
                       mapContainerStyle={containerStyle}
                       center={center}
                       zoom={10}
+<<<<<<< HEAD
                       onDblClick={props.form.mutators.onMapDobleClick}
                     >
                       {renderMarker(props.values)}
+=======
+                      // onDblClick={(e) =>
+                      //   setMarkerPosition({
+                      //     lat: e.latLng.lat(),
+                      //     lng: e.latLng.lng(),
+                      //   })
+                      // }
+                    >
+                      {renderMarker()}
+>>>>>>> 6d0cef8e60e42b3cddc32b244051afcccc94f3d4
                     </GoogleMap>
                   </LoadScript>
                   <p style={{ lineHeight: "15px" }}>
@@ -138,30 +161,96 @@ function AddPlaceModal({ close, initialValues, add, update }) {
                       forma correcta favor corregirlos
                     </small>
                   </p>
+<<<<<<< HEAD
                   <div className="col-md-12">
                     <label className="form-label">
                       Nombre del lugar/edificio*
                     </label>
                     <FieldInput name="place" />
+=======
+                  <div class="mt-2 row">
+                    <div className="col-md-12">
+                      <label className="form-label">
+                        Nombre del lugar/edificio*
+                      </label>
+                      <Field name="place">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                            isValidated={props.meta?.touched}
+                          />
+                        )}
+                      </Field>
+                    </div>
+>>>>>>> 6d0cef8e60e42b3cddc32b244051afcccc94f3d4
                   </div>
                   <div class="mt-2 row">
                     <div className="col-md-8">
                       <label className="form-label">Calle*</label>
+<<<<<<< HEAD
                       <FieldInput name="street" />
                     </div>
                     <div className="col-md-4">
                       <label className="form-label">Numero</label>
                       <FieldInput name="number" />
+=======
+                      <Field name="street">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                            isValidated={props.meta.touched}
+                          />
+                        )}
+                      </Field>
+                    </div>
+                    <div className="col-md-4">
+                      <label className="form-label">Numero</label>
+                      <Field name="number">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                            isValidated={props.meta.touched}
+                          />
+                        )}
+                      </Field>
+>>>>>>> 6d0cef8e60e42b3cddc32b244051afcccc94f3d4
                     </div>
                   </div>
                   <div class="mt-2 row">
                     <div className="col-md-6">
                       <label className="form-label">Ciudad*</label>
+<<<<<<< HEAD
                       <FieldInput name="city" />
                     </div>
                     <div className="col-md-6">
                       <label className="form-label">Provincia*</label>
                       <FieldInput name="state" />
+=======
+                      <Field name="city">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                            isValidated={props.meta.touched}
+                          />
+                        )}
+                      </Field>
+                    </div>
+                    <div className="col-md-6">
+                      <label className="form-label">Provincia*</label>
+                      <Field name="state">
+                        {(props) => (
+                          <InputWithValidation
+                            input={props.input}
+                            meta={props.meta}
+                            isValidated={props.meta.touched}
+                          />
+                        )}
+                      </Field>
+>>>>>>> 6d0cef8e60e42b3cddc32b244051afcccc94f3d4
                     </div>
                   </div>
                 </div>
